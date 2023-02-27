@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "MLTable": "yaml",
+        "unordered_map": "cpp",
+        "ostream": "cpp",
+        "vector": "cpp"
+    }
+}
