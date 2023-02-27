@@ -1,5 +1,6 @@
 #include<iostream>
 #include<vector>
+#include<queue>
 using namespace std;
 
 
@@ -14,7 +15,7 @@ public:
     Node* bottomRight;
     
     Node() {
-        val = true;
+        val = false;
         isLeaf = false;
         topLeft = NULL;
         topRight = NULL;
@@ -44,54 +45,106 @@ public:
 
 class Solution {
 private:
-    int x, y, n;
+    int X, Y, n;
 public:
     Node* construct(vector<vector<int>>& grid) {
         n = grid.size();
-        
-        // int half = n/2;
-        // int tl, tr, bl, br;
-        // // cout<<n<<endl;
-        // for(int i=0; i<half; i++){
-        //     for(int j=0; j<half; j++){
-        //         tl = grid[i*2][j*2];
-        //         tr = grid[i*2][j*2+1];
-        //         bl = grid[i*2+1][j*2];
-        //         br = grid[i*2+1][j*2+1];
-
-        //     }
-        // }
-        
+        return BuildTree(grid, n, 0, 0);
     }
-    Node* BuildTree(vector<vector<int>>& grid){
+    Node* BuildTree(vector<vector<int>>& grid, int size, int x, int y){
         bool tl, tr, bl, br;
-        Node *topLeft, topRight, bottomLeft, bottomRight;
-        Node *node = new Node();
+        bool leaf_tl, leaf_tr, leaf_bl, leaf_br;
+        Node *topLeft, *topRight, *bottomLeft, *bottomRight;
+        Node *node = new Node(1,0);
         
-        if (n==1) return new Node(grid[x][y],1);
-        
-        tl = (new Node(grid[n/2][n/2],0))->val;
-        
-        if((tl & tr & bl & br) || !(tl | tr | bl | br)){
-            node->isLeaf = 1;
-            if(!(tl | tr | bl | br))
+        if (size==1) return new Node(grid[y][x],1);
+        int halfsize = size/2;
+        node->topLeft  = BuildTree(grid, halfsize, x, y);
+        node->topRight = BuildTree(grid, halfsize, x + halfsize, y);
+        node->bottomLeft  = BuildTree(grid, halfsize, x, y + halfsize);
+        node->bottomRight = BuildTree(grid, halfsize, x + halfsize, y + halfsize);
+         
+        tl = node->topLeft->val;
+        tr = node->topRight->val;
+        bl = node->bottomLeft->val;
+        br = node->bottomRight->val;
+
+        leaf_tl = node->topLeft->isLeaf;
+        leaf_tr = node->topRight->isLeaf;
+        leaf_bl = node->bottomLeft->isLeaf;
+        leaf_br = node->bottomRight->isLeaf;
+
+        if(leaf_tl & leaf_tr & leaf_bl & leaf_br){
+            if((tl & tr & bl & br)){
+                node->val = 1;
+                node->isLeaf = 1;
+                node->topLeft = NULL;
+                node->topRight = NULL;
+                node->bottomLeft = NULL;
+                node->bottomRight = NULL;
+            }
+            if(!(tl | tr | bl | br)){
                 node->val = 0;
+                node->isLeaf = 1;
+                node->topLeft = NULL;
+                node->topRight = NULL;
+                node->bottomLeft = NULL;
+                node->bottomRight = NULL;
+            }
+
         }
-        return NULL;
+      
+        return node;
     }
 };
 
 
 
 #if 1
+queue<Node *> Q;
+void traverseTree(Node* node){
+    Q.push(node);
+    int cnt=0;
+    while(!Q.empty()){
+        Node *t = Q.front();
+        Q.pop();
+        if(t && !t->isLeaf){
+            if(t->topLeft) Q.push(t->topLeft);
+            if(t->topRight) Q.push(t->topRight);
+            if(t->bottomLeft) Q.push(t->bottomLeft);
+            if(t->bottomRight) Q.push(t->bottomRight);
+        }
+        cout<<'['<<t->isLeaf<<','<<t->val<<']'<<", \n";
+        cnt++;
+    }
+    cout<<cnt<<" nodes in total.\n";
+}
 int main(){
     vector<vector<int>> vect
     {
-        {0,1},
-        {1,0}
+        // {0,1},
+        // {1,0}
+        
+        {1,1,1,1,0,0,0,0},
+        {1,1,1,1,0,0,0,0},
+        {1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1},
+        {1,1,1,1,0,0,0,0},
+        {1,1,1,1,0,0,0,0},
+        {1,1,1,1,0,0,0,0},
+        {1,1,1,1,0,0,0,0}
+
+        // {1,1,1,1,1,1,1,1},
+        // {1,1,1,1,1,1,1,1},
+        // {1,1,1,1,1,1,1,1},
+        // {1,1,1,1,1,1,1,1},
+        // {1,1,1,1,1,1,1,1},
+        // {1,1,1,1,1,1,1,1},
+        // {1,1,1,1,1,1,1,1},
+        // {1,1,1,1,1,1,1,1}
     };
     Solution sol;
     Node* node = sol.construct(vect);
-    
+    traverseTree(node);
 }
 #endif
