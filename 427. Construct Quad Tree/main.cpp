@@ -44,12 +44,9 @@ public:
 
 
 class Solution {
-private:
-    int X, Y, n;
 public:
     Node* construct(vector<vector<int>>& grid) {
-        n = grid.size();
-        return BuildTree(grid, n, 0, 0);
+        return BuildTree(grid, grid.size(), 0, 0);
     }
     Node* BuildTree(vector<vector<int>>& grid, int size, int x, int y){
         bool tl, tr, bl, br;
