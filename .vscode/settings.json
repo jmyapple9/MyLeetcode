@@ -3,6 +3,23 @@
         "MLTable": "yaml",
         "unordered_map": "cpp",
         "ostream": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "xhash": "cpp",
+        "xtree": "cpp",
+        "array": "cpp",
+        "chrono": "cpp",
+        "deque": "cpp",
+        "filesystem": "cpp",
+        "format": "cpp",
+        "forward_list": "cpp",
+        "initializer_list": "cpp",
+        "list": "cpp",
+        "map": "cpp",
+        "regex": "cpp",
+        "set": "cpp",
+        "unordered_set": "cpp",
+        "xstring": "cpp",
+        "string": "cpp",
+        "iostream": "cpp"
     }
 }
