@@ -7,11 +7,7 @@ class Solution
 public:
     int longestPalindromeSubseq(string s)
     {
-        // vector<vector<int>> DP(s.size(), vector<int>(s.size(), 0));
         vector<vector<int>> DP(s.size(), vector<int>(s.size()));
-        // int DP[s.size()][s.size()];
-        // for(int i = 0; i < s.size(); i++) for(int j = 0; j < s.size(); j++)
-        //     DP[i][j] = 0;
         int ans = 0;
         for (int r = 0; r < s.size(); r++)
         {   
@@ -27,8 +23,6 @@ public:
             }
         }
         return DP[0][s.size()-1];
-        // cout<<DP[0][s.size()-1]<<endl;
-        // return ans;
     }
 };
 
