@@ -21,13 +21,8 @@ public:
             cur = cur->next;
         }
         if(n==len) return head->next;
-        for(int i = 1; i<len; i++){
-            if(i==len-n){
-                ListNode* tmp = nodes[i];
-                nodes[i-1]->next = tmp->next;
-                delete tmp;
-            }
-        }
+        
+        nodes[len-n-1]->next = nodes[len-n]->next;
         return head;
         
     }
